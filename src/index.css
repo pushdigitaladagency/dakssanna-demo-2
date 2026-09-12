@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import 'tailwindcss';
+
+/* ============================================================
+   DESIGN SYSTEM TOKENS — derived from Sree Dakssnaa logo
+   Navy #1C2B8C · Red #CC2B2B · Gray #7B8C9E
+   ============================================================ */
+@theme {
+  /* Logo colours */
+  --color-brand-navy:   #1C2B8C;
+  --color-brand-red:    #CC2B2B;
+  --color-brand-gray:   #7B8C9E;
+
+  /* Backgrounds */
+  --color-bg:           #FFFFFF;
+  --color-surface:      #F7F9FF;
+  --color-surface-2:    #EEF2FF;
+
+  /* Borders */
+  --color-border:       #E2E8F4;
+  --color-border-strong:#C7D3EE;
+
+  /* Typography */
+  --color-text-head:    #1C2B8C;
+  --color-text-body:    #3D4F6B;
+  --color-text-muted:   #7B8C9E;
+  --color-text-faint:   #B0BECE;
+
+  /* Fonts */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body:    'Inter', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
+html, body, #root { height: 100%; }
+
+body {
+  font-family: var(--font-body);
+  background-color: #FFFFFF;
+  color: #3D4F6B;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #F7F9FF; }
+::-webkit-scrollbar-thumb { background: #1C2B8C; border-radius: 4px; }
+
+/* Font helpers */
+.font-display     { font-family: var(--font-display); }
+.font-mono-custom { font-family: var(--font-mono); }
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes fadeUp    { from { opacity:0; transform:translateY(32px) } to { opacity:1; transform:none } }
+@keyframes fadeDown  { from { opacity:0; transform:translateY(-24px)} to { opacity:1; transform:none } }
+@keyframes fadeLeft  { from { opacity:0; transform:translateX(40px) } to { opacity:1; transform:none } }
+@keyframes fadeRight { from { opacity:0; transform:translateX(-40px)} to { opacity:1; transform:none } }
+@keyframes scaleUp   { from { opacity:0; transform:scale(0.92) }      to { opacity:1; transform:scale(1) } }
+@keyframes clipLeft  { from { clip-path:inset(0 100% 0 0) }           to { clip-path:inset(0 0% 0 0) } }
+@keyframes heroText  { 0% { opacity:0; transform:translateY(40px) skewY(1.5deg) } 100% { opacity:1; transform:none } }
+@keyframes floatY    { 0%,100% { transform:translateY(0) } 50% { transform:translateY(-8px) } }
+@keyframes pulseDot  { 0%,100% { opacity:1; transform:scale(1) } 50% { opacity:0.4; transform:scale(0.8) } }
+@keyframes rotateSlowCW { from { transform:rotate(0deg) } to { transform:rotate(360deg) } }
+@keyframes marquee   { from { transform:translateX(0) } to { transform:translateX(-50%) } }
+@keyframes shimmer   { 0% { background-position:-200% 0 } 100% { background-position:200% 0 } }
+@keyframes borderGrow { from { transform:scaleX(0) } to { transform:scaleX(1) } }
+@keyframes glowPulse  { 0%,100% { box-shadow:0 0 0 0 rgba(28,43,140,0) } 50% { box-shadow:0 0 0 6px rgba(28,43,140,0.08) } }
+
+/* ============================================================
+   SCROLL ANIMATION SYSTEM
+   ============================================================ */
+[data-anim] {
+  opacity: 0;
+  transition-property: opacity, transform, clip-path;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-duration: var(--anim-duration, 650ms);
+  transition-delay: var(--anim-delay, 0ms);
+  will-change: transform, opacity;
+}
+[data-anim="fade-up"]    { transform: translateY(28px); }
+[data-anim="fade-down"]  { transform: translateY(-20px); }
+[data-anim="fade-left"]  { transform: translateX(36px); }
+[data-anim="fade-right"] { transform: translateX(-36px); }
+[data-anim="scale-up"]   { transform: scale(0.92); }
+[data-anim="clip-left"]  { clip-path: inset(0 100% 0 0); }
+[data-anim="fade"]       {}
+
+[data-anim].anim-in {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0);
+}
+
+[data-anim] [data-anim-child] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 520ms cubic-bezier(0.25,0.46,0.45,0.94),
+              transform 520ms cubic-bezier(0.25,0.46,0.45,0.94);
+}
+[data-anim].anim-in [data-anim-child] { opacity:1; transform:none; }
+[data-anim] [data-anim-child]:nth-child(1)  { transition-delay: calc(var(--anim-delay,0ms) + 0   * var(--anim-stagger,75ms)); }
+[data-anim] [data-anim-child]:nth-child(2)  { transition-delay: calc(var(--anim-delay,0ms) + 1   * var(--anim-stagger,75ms)); }
+[data-anim] [data-anim-child]:nth-child(3)  { transition-delay: calc(var(--anim-delay,0ms) + 2   * var(--anim-stagger,75ms)); }
+[data-anim] [data-anim-child]:nth-child(4)  { transition-delay: calc(var(--anim-delay,0ms) + 3   * var(--anim-stagger,75ms)); }
+[data-anim] [data-anim-child]:nth-child(5)  { transition-delay: calc(var(--anim-delay,0ms) + 4   * var(--anim-stagger,75ms)); }
+[data-anim] [data-anim-child]:nth-child(6)  { transition-delay: calc(var(--anim-delay,0ms) + 5   * var(--anim-stagger,75ms)); }
+[data-anim] [data-anim-child]:nth-child(7)  { transition-delay: calc(var(--anim-delay,0ms) + 6   * var(--anim-stagger,75ms)); }
+[data-anim] [data-anim-child]:nth-child(8)  { transition-delay: calc(var(--anim-delay,0ms) + 7   * var(--anim-stagger,75ms)); }
+[data-anim] [data-anim-child]:nth-child(9)  { transition-delay: calc(var(--anim-delay,0ms) + 8   * var(--anim-stagger,75ms)); }
+[data-anim] [data-anim-child]:nth-child(10) { transition-delay: calc(var(--anim-delay,0ms) + 9   * var(--anim-stagger,75ms)); }
+[data-anim] [data-anim-child]:nth-child(11) { transition-delay: calc(var(--anim-delay,0ms) + 10  * var(--anim-stagger,75ms)); }
+[data-anim] [data-anim-child]:nth-child(12) { transition-delay: calc(var(--anim-delay,0ms) + 11  * var(--anim-stagger,75ms)); }
+
+/* ============================================================
+   UTILITY ANIMATIONS
+   ============================================================ */
+.animate-float      { animation: floatY 4s ease-in-out infinite; }
+.animate-pulse-dot  { animation: pulseDot 2.5s ease-in-out infinite; }
+.animate-spin-slow  { animation: rotateSlowCW 22s linear infinite; }
+.animate-hero-text  { animation: heroText 0.9s cubic-bezier(0.22,1,0.36,1) forwards; }
+.marquee-track      { animation: marquee 28s linear infinite; }
+.marquee-track:hover { animation-play-state: paused; }
+.marquee-track-slow  { animation: marquee 44s linear infinite; }
+.marquee-track-slow:hover { animation-play-state: paused; }
+
+/* Hero word reveal */
+.hero-word         { display: inline-block; overflow: hidden; }
+.hero-word-inner   { display: inline-block; animation: heroText 0.9s cubic-bezier(0.22,1,0.36,1) both; }
+
+/* ============================================================
+   SCROLL PROGRESS BAR
+   ============================================================ */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, #1C2B8C, #CC2B2B);
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: 100;
+  transition: transform 0.1s linear;
+}
+
+/* ============================================================
+   NAV LINK UNDERLINE
+   ============================================================ */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 2px;
+  background: #CC2B2B;
+  border-radius: 1px;
+  transition: width 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.nav-link:hover::after,
+.nav-link.active::after { width: 100%; }
+
+/* ============================================================
+   CARD HOVER ANIMATIONS — six distinct variants
+   ============================================================ */
+
+/* 1. Lift + shadow grow — capability cards */
+.card-lift {
+  transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1),
+              box-shadow 0.32s ease;
+}
+.card-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 48px rgba(28,43,140,0.14), 0 4px 12px rgba(28,43,140,0.08);
+}
+
+/* 2. Glow ring — facility/machine cards */
+.card-glow {
+  transition: border-color 0.28s ease, box-shadow 0.28s ease, transform 0.28s ease;
+}
+.card-glow:hover {
+  border-color: rgba(28,43,140,0.45) !important;
+  box-shadow: 0 0 0 4px rgba(28,43,140,0.07), 0 12px 28px rgba(28,43,140,0.1);
+  transform: translateY(-3px);
+}
+
+/* 3. Bottom bar reveal — leadership cards */
+.card-reveal {
+  position: relative;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+}
+.card-reveal::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1C2B8C, #CC2B2B);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.card-reveal:hover::after   { transform: scaleX(1); }
+.card-reveal:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(28,43,140,0.1);
+}
+
+/* 4. Perspective tilt — partnership cards */
+.card-tilt {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.card-tilt:hover {
+  transform: perspective(1200px) rotateY(-3deg) translateY(-5px);
+  box-shadow: 10px 20px 40px rgba(28,43,140,0.12);
+}
+
+/* 5. Scale + shimmer outline — quality/R&D cards */
+.card-scale {
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.card-scale:hover {
+  transform: scale(1.025);
+  box-shadow: 0 14px 36px rgba(28,43,140,0.12);
+}
+
+/* 6. Slide-in left accent — R&D row items */
+.card-slide {
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  border-left: 4px solid transparent;
+}
+.card-slide:hover {
+  transform: translateX(6px);
+  border-left-color: #CC2B2B;
+  box-shadow: 0 8px 24px rgba(28,43,140,0.09);
+}
+
+/* ============================================================
+   PHOTO CARD — zoom on hover
+   ============================================================ */
+.photo-card { overflow: hidden; }
+.photo-card img { transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+.photo-card:hover img { transform: scale(1.06); }
+
+/* ============================================================
+   LAYOUT UTILITIES
+   ============================================================ */
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(28,43,140,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28,43,140,0.055) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.blueprint-grid-fine {
+  background-image:
+    linear-gradient(rgba(28,43,140,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28,43,140,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* legacy compat */
+.grid-overlay      { }
+.grid-overlay-fine { }
+.parallax-layer    { will-change: transform; transform: translateZ(0); }
+
+/* Spec row */
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid #E2E8F4;
+  font-size: 0.8125rem;
+}
+.spec-row:last-child { border-bottom: none; }
+
+/* ============================================================
+   SHIMMER TEXT
+   ============================================================ */
+.shimmer-text {
+  background: linear-gradient(90deg, #1C2B8C 0%, #CC2B2B 50%, #1C2B8C 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.hover\:scale-108:hover { transform: scale(1.08); }

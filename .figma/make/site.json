@@ -1,0 +1,10 @@
+{
+  "description": "Transform PDF content and text prompts into tailored website designs, streamlining the web creation process for users seeking efficient solutions.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
