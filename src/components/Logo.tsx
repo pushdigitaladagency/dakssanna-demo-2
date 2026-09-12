@@ -1,4 +1,4 @@
-import logoPng from '@/imports/DAKSSNAA_LOGO.png';
+import logoPng from '@/imports/logo dakssnaa final.png';
 
 interface LogoMarkProps {
   height?: number;
